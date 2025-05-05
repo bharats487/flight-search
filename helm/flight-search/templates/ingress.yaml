@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-flight-search
+  labels:
+    app.kubernetes.io/name: flight-search
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: flight-search.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-flight-search
+                port:
+                  number: {{ .Values.service.port }}

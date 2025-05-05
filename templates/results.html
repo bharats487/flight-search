@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Flight Search Results</h1>
+            <p>Showing flights from {{ origin }} to {{ destination }}</p>
+            <div class="search-details">
+                <span>Departure: {{ departure_date }}</span>
+                {% if return_date %}
+                <span>Return: {{ return_date }}</span>
+                {% endif %}
+            </div>
+        </header>
+
+        <main>
+            <div class="back-link">
+                <a href="/">&larr; New Search</a>
+            </div>
+
+            <div class="results-container">
+                {% if flights and flights.flights %}
+                    {% for flight in flights.flights %}
+                    <div class="flight-card">
+                        <div class="airline">
+                            <h3>{{ flight.airline }}</h3>
+                            <span class="flight-number">{{ flight.flight_number }}</span>
+                        </div>
+                        
+                        <div class="flight-info">
+                            <div class="departure-info">
+                                <div class="time">{{ flight.departure.time }}</div>
+                                <div class="airport">{{ flight.departure.airport }}</div>
+                                <div class="date">{{ flight.departure.date }}</div>
+                            </div>
+                            
+                            <div class="flight-duration">
+                                <div class="duration">{{ flight.duration }}</div>
+                                <div class="line">
+                                    <div class="stops-indicator">
+                                        {% if flight.stops == 0 %}
+                                        <span class="nonstop">Nonstop</span>
+                                        {% else %}
+                                        <span class="stops">{{ flight.stops }} stop{% if flight.stops > 1 %}s{% endif %}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="arrival-info">
+                                <div class="time">{{ flight.arrival.time }}</div>
+                                <div class="airport">{{ flight.arrival.airport }}</div>
+                                <div class="date">{{ flight.arrival.date }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="price-container">
+                            <div class="price">${{ "%.2f"|format(flight.price) }}</div>
+                            <button class="book-button">Book Now</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="no-results">
+                    <h2>No flights found</h2>
+                    <p>Try changing your search parameters or dates.</p>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <footer>
+            <p>Flight Search App © 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

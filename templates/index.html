@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Find Your Perfect Flight</h1>
+            <p>Search for the best deals on flights worldwide</p>
+        </header>
+
+        <main>
+            <div class="search-container">
+                <form action="/search" method="post">
+                    {% if error %}
+                    <div class="error">{{ error }}</div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="origin">Origin (Airport Code)</label>
+                        <input type="text" id="origin" name="origin" placeholder="e.g. JFK, LAX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destination">Destination (Airport Code)</label>
+                        <input type="text" id="destination" name="destination" placeholder="e.g. LHR, CDG" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="departure_date">Departure Date</label>
+                            <input type="date" id="departure_date" name="departure_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="return_date">Return Date (Optional)</label>
+                            <input type="date" id="return_date" name="return_date">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="search-button">Search Flights</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>Flight Search App © 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set minimum date for departure and return date inputs to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('departure_date').setAttribute('min', today);
+        document.getElementById('return_date').setAttribute('min', today);
+        
+        // Update return date min value when departure date changes
+        document.getElementById('departure_date').addEventListener('change', function() {
+            document.getElementById('return_date').setAttribute('min', this.value);
+        });
+    </script>
+</body>
+</html>
